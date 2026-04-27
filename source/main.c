@@ -1,7 +1,8 @@
 #include <string.h>
 #include <stdio.h>
-
+#include <limits.h>
 #include <switch.h>
+
 
 int main(int argc, char **argv)
 {
@@ -22,8 +23,15 @@ int main(int argc, char **argv)
     
     // A little demonstration of my arm powers jk
     uint64_t hardware_random_seed = 0;
-    __asm ("MRS %[seed], RNDRRS" : [seed] "=r" (hardware_random_seed));
-    printf("\x1b[1;0HRandom seed=%zu", hardware_random_seed);
+    __asm__ volatile(
+        "mrs %x0, RNDRRS\n"      
+        "str %x0, [%0]\n"    
+        : "=r"(hardware_random_seed)                 
+    );
+    
+    
+    // Crashes when I access probably doing something wrong or the switch not supporting it 
+    //printf("\x1b[10;0HRandom seed=%zu", hardware_random_seed);
 
     while(appletMainLoop())
     {

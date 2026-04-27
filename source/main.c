@@ -3,15 +3,6 @@
 
 #include <switch.h>
 
-uint64_t hardware_random_seed(void) {
-    uint64_t seed = 0;
-    
-    // Somehow crashes
-   // __asm ("MRS %[seed], RNDRRS" : [seed] "=r" (seed));
-   
-    return seed;
-}
-
 int main(int argc, char **argv)
 {
     //Initialize console. Using NULL as the second argument tells the console library to use the internal console structure as current one.
@@ -28,7 +19,11 @@ int main(int argc, char **argv)
     //To move the cursor you have to print "\x1b[r;cH", where r and c are respectively
     //the row and column where you want your cursor to move
     printf("\x1b[0;0HPinga madre I compiled this switch app \"sin AI\"!");
-    printf("\x1b[1;0HRandom seed=%zu", hardware_random_seed());
+    
+    // A little demonstration of my arm powers jk
+    uint64_t hardware_random_seed = 0;
+    __asm ("MRS %[seed], RNDRRS" : [seed] "=r" (hardware_random_seed));
+    printf("\x1b[1;0HRandom seed=%zu", hardware_random_seed);
 
     while(appletMainLoop())
     {
@@ -36,7 +31,7 @@ int main(int argc, char **argv)
         padUpdate(&pad);
 
         // padGetButtonsDown returns the set of buttons that have been newly pressed in this frame compared to the previous one
-        u64 kDown = padGetButtonsDown(&pad);
+        uint64_t kDown = padGetButtonsDown(&pad);
 
         if (kDown & HidNpadButton_Plus) break; // break in order to return to hbmenu
 

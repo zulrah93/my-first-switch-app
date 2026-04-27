@@ -6,7 +6,8 @@
 uint64_t hardware_random_seed(void) {
     uint64_t seed = 0;
     
-    __asm ("MRS %[seed], RNDRRS" : [seed] "=r" (seed));
+    // Somehow crashes
+   // __asm ("MRS %[seed], RNDRRS" : [seed] "=r" (seed));
    
     return seed;
 }

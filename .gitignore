@@ -3,4 +3,4 @@
 *.nro
 copy_to_switch.sh
 eject.sh
-build/
+build/*

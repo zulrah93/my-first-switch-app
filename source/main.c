@@ -28,15 +28,13 @@ int main(int argc, char **argv)
     PadState pad;
     padInitializeDefault(&pad);
 
-
-    printf("\x1b[0;0H  CNTPCT_EL0=%zu", get_arm64_system_tick());
-
     while(appletMainLoop()) {
         padUpdate(&pad);
         uint64_t kDown = padGetButtonsDown(&pad);
         if (kDown & HidNpadButton_Plus) {
             break;
         }
+        printf("\x1b[0;0H  CNTPCT_EL0=%zu", get_arm64_system_tick());
         consoleUpdate(NULL);
     }
 

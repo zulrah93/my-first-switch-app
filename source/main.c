@@ -5,7 +5,7 @@
 #include <switch.h>
 
 //Showing some of my arm-fu -- unfortunately this homebrew app runs at exception level 0 so I cannot do too much magic :(
-
+//Souce: https://developer.arm.com/documentation/ddi0601/2021-06/AArch64-Registers/CNTPCT-EL0--Counter-timer-Physical-Count-register
 static inline volatile uint64_t get_arm64_system_tick(void) {
     uint64_t ticks;
     __asm__ __volatile__ ("MRS %x[data], CNTPCT_EL0" : [data] "=r" (ticks));
@@ -34,7 +34,8 @@ int main(int argc, char **argv)
         if (kDown & HidNpadButton_Plus) {
             break;
         }
-        printf("\x1b[0;0H  CNTPCT_EL0=%zu", get_arm64_system_tick());
+        uint64_t ticks = get_arm64_system_tick();
+        printf("\x1b[0;0H  Register CNTPCT_EL0 has the value %zu in tick(s) or approx. %zu second(s) since last CPU reset", ticks, (ticks / 10000000));
         consoleUpdate(NULL);
     }
 

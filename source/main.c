@@ -35,7 +35,10 @@ int main(int argc, char **argv)
             break;
         }
         uint64_t ticks = get_arm64_system_tick();
-        printf("\x1b[0;0H  Register CNTPCT_EL0 has the value %zu in tick(s) or approx. %zu second(s) since last CPU reset", ticks, (ticks / 10000000));
+        printf("\x1b[0;0H  Register CNTPCT_EL0 has the value %zu in tick(s) or approximately...", ticks);
+        printf("\x1b[2;0H %zu second(s) since last CPU reset", (ticks / 10000000));
+        printf("\x1b[3;0H %zu minutes(s) since last CPU reset", (ticks / 10000000) / 60);
+        printf("\x1b[4;0H %zu hour(s) since last CPU reset", (ticks / 10000000) / 60 / 60);
         consoleUpdate(NULL);
     }
 
